@@ -2,6 +2,7 @@
 // We're pulling all earthquakes from the last seven days
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
+
 // Perform a GET request to the query URLs/
 d3.json(queryUrl).then(function (data) {
     // Once we get a response, send the data.features object to the createFeatures function.
@@ -23,8 +24,9 @@ function circleColor(depth) {
         return "#FFA500";
     } else {
         return "#FF0000";
-    }
+    };
 };
+
 
 // Create function to determine the size of marker based on magnitude
 function circleRadius(mag) {
@@ -40,15 +42,16 @@ function circleRadius(mag) {
         return 75000;
     } else {
         return 100000;
-    }
-}
+    };
+};
+
 
 // Call function to create our earthquake layer and map
 function createFeatures(earthquakeData) {
     
+    
     // Pass to leaflet
     var earthquakes = L.geoJSON(earthquakeData, {
-        
         onEachFeature: function (feature, layer) {
 
             // Establich Popup Data
@@ -59,6 +62,7 @@ function createFeatures(earthquakeData) {
                     Depth: ${feature.geometry.coordinates[2]} km</p>`
                 )},
 
+        
             // Associate with circle markers
             pointToLayer: function (feature, location) {
                 return new L.circle(location, {
@@ -73,6 +77,7 @@ function createFeatures(earthquakeData) {
         }
     )
     
+    
     // Send our earthquakes layer to the createMap function/
     createMap(earthquakes);
 };
@@ -86,10 +91,12 @@ function createMap(earthquakes) {
     var plates = L.layerGroup();
     var platesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
     
+    
     // Create the base layers.
     var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     })
+    
     
     var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
         attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
@@ -102,12 +109,14 @@ function createMap(earthquakes) {
         "Topological Map": topo
     };
 
+    
     // Create an overlay object to hold our overlay.
     var overlayMaps = {
         "Earthquakes" : earthquakes,
         "Tectonic Plates" : plates
     };
 
+    
     // Create our map, giving it the streetmap and earthquakes layers to display on load.
     var myMap = L.map("map", {
         center: [
@@ -137,26 +146,23 @@ function createMap(earthquakes) {
     });
     
     
-    
     // Now create a legend and add it to the map
     var legend = L.control({position: 'bottomright'});
-
     legend.onAdd = function (map) {
-
         var div = L.DomUtil.create('div', 'info legend'),
             depths = [0, 10, 30, 50, 70, 90],
             labels = [];
-
+        
+        
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < depths.length; i++) {
             div.innerHTML +=
                 '<i style="background:' + circleColor(depths[i] + 1) + '"></i> ' +
                 depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-        }
-
+        };
         return div;
     };
     legend.addTo(myMap);
-}
+};
 
 

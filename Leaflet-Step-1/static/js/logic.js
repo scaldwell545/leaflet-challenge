@@ -2,6 +2,7 @@
 // We're pulling all earthquakes from the last seven days
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
+
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
     // Once we get a response, send the data.features object to the createFeatures function.
@@ -23,8 +24,9 @@ function circleColor(depth) {
         return "#FFA500";
     } else {
         return "#FF0000";
-    }
+    };
 };
+
 
 // Create function to determine the size of marker based on magnitude
 function circleRadius(mag) {
@@ -41,16 +43,18 @@ function circleRadius(mag) {
     } else {
         return 100000;
     }
-}
+};
+
 
 // Call function to create our earthquake layer and map
 function createFeatures(earthquakeData) {
     
+    
     // Pass to leaflet
     var earthquakes = L.geoJSON(earthquakeData, {
-        
         onEachFeature: function (feature, layer) {
 
+            
             // Establich Popup Data
             layer.bindPopup(
                 `<h3>${feature.properties.place}</h3><hr><p>
@@ -59,6 +63,7 @@ function createFeatures(earthquakeData) {
                     Depth: ${feature.geometry.coordinates[2]} km</p>`
                 )},
 
+        
             // Associate with circle markers
             pointToLayer: function (feature, location) {
                 return new L.circle(location, {
@@ -73,30 +78,33 @@ function createFeatures(earthquakeData) {
         }
     );
 
-    // Send our earthquakes layer to the createMap function/
+    
+    // Send our earthquakes layer to the createMap function
     createMap(earthquakes);
-}
-
-
+};
 
 
 function createMap(earthquakes) {
 
+    
     // Create the base layers.
     var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     })
 
+    
     // Create a baseMaps object.
     var baseMaps = {
         "Street Map": street
     };
 
+    
     // Create an overlay object to hold our overlay.
     var overlayMaps = {
         Earthquakes: earthquakes
     };
 
+    
     // Create our map, giving it the streetmap and earthquakes layers to display on load.
     var myMap = L.map("map", {
         center: [
@@ -106,31 +114,22 @@ function createMap(earthquakes) {
         layers: [street, earthquakes]
     });
 
-//     // Create a layer control.
-//     // Pass it our baseMaps and overlayMaps.
-//     // Add the layer control to the map.
-//     L.control.layers(baseMaps, overlayMaps, {
-//         collapsed: false
-//     }).addTo(myMap);
     
     // Now create a legend and add it to the map
     var legend = L.control({position: 'bottomright'});
-
     legend.onAdd = function (map) {
-
         var div = L.DomUtil.create('div', 'info legend'),
             depths = [0, 10, 30, 50, 70, 90],
             labels = [];
 
-        // loop through our density intervals and generate a label with a colored square for each interval
+        
+        // loop through our depth intervals and generate a label with a colored square for each interval
         for (var i = 0; i < depths.length; i++) {
             div.innerHTML +=
                 '<i style="background:' + circleColor(depths[i] + 1) + '"></i> ' +
                 depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-        }
-
+        };
         return div;
     };
-    
     legend.addTo(myMap);
-}
+};
