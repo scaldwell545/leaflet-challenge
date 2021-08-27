@@ -15,7 +15,7 @@
 
    * Include popups that provide additional information about the earthquake when a marker is clicked.
 
-
+![Screenshot1](Leaflet-Step-1/Step-1-Screenshot.PNG?raw=true)
 - - -
 
 ### Level 2: More Data
@@ -30,4 +30,5 @@ Pull data on tectonic plates to illustrate the relationship between tectonic pla
 
 * Add layer controls to the map.
 
+![Screenshot1](Leaflet-Step-1/Step-2-Screenshot.PNG?raw=true)
 - - -
