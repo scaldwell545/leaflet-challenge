@@ -154,7 +154,7 @@ function createMap(earthquakes) {
             labels = [];
         
         
-        // loop through our density intervals and generate a label with a colored square for each interval
+        // loop through our depth intervals and generate a label with a colored square for each interval
         for (var i = 0; i < depths.length; i++) {
             div.innerHTML +=
                 '<i style="background:' + circleColor(depths[i] + 1) + '"></i> ' +
