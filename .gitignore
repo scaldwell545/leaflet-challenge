@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 ## add config
-config.py
+config.js
 
 # Distribution / packaging
 .Python
