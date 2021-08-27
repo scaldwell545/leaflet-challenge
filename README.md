@@ -30,5 +30,5 @@ Pull data on tectonic plates to illustrate the relationship between tectonic pla
 
 * Add layer controls to the map.
 
-![Screenshot1](Leaflet-Step-1/Step-2-Screenshot.PNG?raw=true)
+![Screenshot2](Leaflet-Step-2/Step-2-Screenshot.PNG?raw=true)
 - - -
